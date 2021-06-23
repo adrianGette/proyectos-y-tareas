@@ -7,6 +7,9 @@ const auth = require('../middleware/auth');
 // api/proyectos
 router.post('/',
     auth,
+    [
+        check('nombre', 'El nombre del proyecto es obligatorio').not().isEmpty()
+    ],
     proyectoController.crearProyecto
 );
 
