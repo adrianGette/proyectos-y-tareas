@@ -10,8 +10,6 @@ exports.crearTarea = async (req, res) => {
         return res.status(400).json({ errores: errores.array() })
     }
 
-    
-
     try {
 
         // extraer el proyecto y comprobar si existe
@@ -31,6 +29,33 @@ exports.crearTarea = async (req, res) => {
         const tarea = new Tarea(req.body);
         await tarea.save();
         res.json({ tarea });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Hubo un error');
+    }
+}
+
+// obtiene las tareas por proyecto
+exports.obtenerTareas = async (req, res) => {
+
+    try {
+        // extraer el proyecto y comprobar si existe
+        const { proyecto } = req.body;
+
+        const existeProyecto = await Proyecto.findById(proyecto);
+        if(!existeProyecto) {
+            return res.status(404).json({msg: 'no encontrado'});
+        }
+
+        // revisar si el proyecto actual pertenece al usuario autenticado
+        if(existeProyecto.creador.toString() !== req.usuario.id) {
+            return res.status(401).json({msg: 'No autorizado'});
+        }
+
+        // obtener las tareas por proyecto
+        const tareas = await Tarea.find({ proyecto });
+        res.json({ tareas });
+        
     } catch (error) {
         console.log(error);
         res.status(500).send('Hubo un error');
