@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 // import mySvg from '../../../public/wave4.svg';
 //import mySvg2 from '../../wave3.svg';
 import { Link } from 'react-router-dom';
@@ -6,14 +6,24 @@ import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
 
 
-const NuevaCuenta = () => {
+const NuevaCuenta = (props) => {
 
     // extraer los valores del context
     const alertaContext = useContext(AlertaContext);
     const { alerta, mostrarAlerta } = alertaContext;
 
     const authContext = useContext(AuthContext);
-    const { registrarUsuario } = authContext;
+    const { mensaje, autenticado, registrarUsuario } = authContext;
+
+    // en caso de ue el usuario se haya autenticado o registrado o sea un registro duplicado
+    useEffect(() => {
+        if(autenticado) {
+            props.history.push('/proyectos');
+        }
+        if(mensaje) {
+            mostrarAlerta(mensaje.msg, mensaje.categoria);
+        }
+    }, [mensaje, autenticado, props.history]);
 
     // state para iniciar sesión
     const [usuario, guardarUsuario] = useState({
