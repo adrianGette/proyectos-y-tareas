@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 // import mySvg from '../../../public/wave4.svg';
 //import mySvg2 from '../../wave3.svg';
 import { Link } from 'react-router-dom';
+import AlertaContext from '../../context/alertas/alertaContext';
+import AuthContext from '../../context/autenticacion/authContext';
 
 
 const Login = () => {
+
+    // extraer los valores del context
+    const alertaContext = useContext(AlertaContext);
+    const { alerta, mostrarAlerta } = alertaContext;
+
+    const authContext = useContext(AuthContext);
+    const { mensaje, autenticado, iniciarSesion } = authContext;
 
     // state para iniciar sesión
     const [usuario, guardarUsuario] = useState({
@@ -27,12 +36,17 @@ const Login = () => {
         e.preventDefault();
 
         // validar que no haya campos vacios
+        if(email.trim() === '' || password.trim() === '') {
+            mostrarAlerta('Todos los campos son obligatorios', 'alerta-error');
+        }
 
         // pasarlo al action
+        iniciarSesion({ email, password });
     }
 
     return (
         <div className="form-usuario">
+            { alerta ? ( <div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div> ) : null }
              {/*style={{backgroundImage: `url(${mySvg2})`}}*/}
             <div className="contenedor-form sombra-dark">
             {/* style={{backgroundImage: `url(${mySvg2})`}} */}
