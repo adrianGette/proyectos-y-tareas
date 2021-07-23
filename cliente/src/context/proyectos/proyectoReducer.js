@@ -18,6 +18,8 @@ export default (state, action) => {
             }
 
         case OBTENER_PROYECTOS:
+            // para saber qué está enviando
+            //console.log(action.payload);
             return {
                 ...state,
                 proyectos: action.payload
