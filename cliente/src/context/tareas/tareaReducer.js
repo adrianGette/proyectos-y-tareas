@@ -17,14 +17,13 @@ export default (state, action) => {
         case TAREAS_PROYECTO:
             return {
                 ...state,
-                tareasproyecto: state.tareasproyecto.filter(tarea => tarea.proyectoId === 
-                action.payload)
+                tareasproyecto: action.payload
             }
 
         case AGREGAR_TAREA:
             return {
                 ...state,
-                tareasproyecto: [action.payload, ...state.tareas],
+                tareasproyecto: [action.payload, ...state.tareasproyecto],
                 errortarea: false
             }
 
