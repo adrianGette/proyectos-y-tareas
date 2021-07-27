@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator');
 
 // crea una nueva tarea
 exports.crearTarea = async (req, res) => {
+
     // revisar si hay errores
     const errores = validationResult(req);
     if( !errores.isEmpty() ) {
@@ -103,7 +104,7 @@ exports.actualizarTarea = async (req, res) => {
 exports.eliminarTarea = async (req, res) => {
     try {
         // extraer el proyecto y comprobar si existe
-        const { proyecto } = req.body;
+        const { proyecto } = req.query;
 
         // si la tarea existe o no
         let tarea = await Tarea.findById(req.params.id);

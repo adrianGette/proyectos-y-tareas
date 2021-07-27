@@ -22,7 +22,7 @@ exports.crearUsuario = async (req, res) => {
             return res.status(400).json({ msg: 'El usuario ya existe' });
         }
 
-        // crea el nuevo usuario+
+        // crea el nuevo usuario
         usuario = new Usuario(req.body);
 
         // hashear password
